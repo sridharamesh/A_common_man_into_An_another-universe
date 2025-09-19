@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Common Man Into Another Universe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Comic+Neue:wght@300;400;700&family=Bangers&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: radial-gradient(circle at center, #0a0a0a 0%, #1a0033 50%, #000011 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .book-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.6);
+            overflow: hidden;
+            position: relative;
+            border: 3px solid #2c3e50;
+        }
+
+        .book-cover {
+            background: linear-gradient(45deg, #2c3e50, #3498db, #9b59b6);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 2px, transparent 2px),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08) 1px, transparent 1px),
+                radial-gradient(circle at 40% 80%, rgba(255,255,255,0.06) 1.5px, transparent 1.5px);
+            animation: sparkle 4s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .universe-portal {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            background: radial-gradient(circle, #ff6b6b, #4ecdc4, #45b7d1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: portalSpin 10s linear infinite;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes portalSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .portal-inner {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, transparent 30%, #000 60%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+            animation: portalSpin 5s linear infinite reverse;
+        }
+
+        .book-title {
+            font-family: 'Bangers', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 2px;
+        }
+
+        .book-author {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+            font-weight: 300;
+        }
+
+        .admin-toggle {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            border: 2px solid #fff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-family: 'Comic Neue', cursive;
+            z-index: 10;
+        }
+
+        .admin-toggle:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+
+        .book-content {
+            padding: 30px;
+            max-height: 70vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #3498db #f1f1f1;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        }
+
+        .book-content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .book-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .book-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            border-radius: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c, #9b59b6, #3498db);
+            border-radius: 15px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
+            border: 2px solid transparent;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.4);
+            border-color: #f39c12;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            transform: scale(1.1);
+            border-color: #f1c40f;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); }
+            50% { box-shadow: 0 4px 25px rgba(231, 76, 60, 0.6); }
+        }
+
+        .chapter {
+            display: none;
+            animation: slideIn 0.6s ease-out;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+            border: 2px solid #ecf0f1;
+        }
+
+        .chapter.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .chapter-title {
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            color: #e74c3c;
+            margin: 30px 0 20px 0;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .section-title::before {
+            content: '◆';
+            color: #f39c12;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.2rem;
+        }
+
+        .content-paragraph {
+            margin-bottom: 20px;
+            text-align: justify;
+            text-indent: 30px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #2c3e50;
+            position: relative;
+            padding: 15px;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid #3498db;
+        }
+
+        .content-paragraph:first-of-type {
+            text-indent: 0;
+        }
+
+        .content-paragraph:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* Comic book style speech bubbles for dialogue */
+        .dialogue {
+            background: #fff;
+            border: 3px solid #2c3e50;
+            border-radius: 20px;
+            padding: 15px 20px;
+            margin: 20px 0;
+            position: relative;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .dialogue::before {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 30px;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid #2c3e50;
+        }
+
+        .dialogue::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 32px;
+            width: 0;
+            height: 0;
+            border-left: 13px solid transparent;
+            border-right: 13px solid transparent;
+            border-top: 13px solid #fff;
+        }
+
+        .character-baviya {
+            background: linear-gradient(145deg, #ffe5b4, #ffd700);
+            border-color: #ff8c00;
+        }
+
+        .character-baviya::before {
+            border-top-color: #ff8c00;
+        }
+
+        .character-baviya::after {
+            border-top-color: #ffe5b4;
+        }
+
+        .character-parthi {
+            background: linear-gradient(145deg, #e3f2fd, #bbdefb);
+            border-color: #1976d2;
+        }
+
+        .character-parthi::before {
+            border-top-color: #1976d2;
+        }
+
+        .character-parthi::after {
+            border-top-color: #e3f2fd;
+        }
+
+        /* Illustration containers */
+        .illustration {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .comic-panel {
+            background: white;
+            border: 4px solid #2c3e50;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comic-panel::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f7b731);
+            border-radius: 17px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .scene-illustration {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin: 15px 0;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .mall-scene {
+            background: linear-gradient(135deg, #ff4757 0%, #2f3542 100%);
+        }
+
+        .universe-scene {
+            background: radial-gradient(circle, #ff6b6b, #4ecdc4, #45b7d1);
+            animation: universeShimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes universeShimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .arena-scene {
+            background: linear-gradient(135deg, #ffa726 0%, #ef5350 50%, #ab47bc 100%);
+        }
+
+        .character-hamster {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #8d5524 30%, #a0522d 70%);
+            border-radius: 50%;
+            display: inline-block;
+            margin: 10px;
+            position: relative;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .character-hamster::before {
+            content: '◉ ◉';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #000;
+            font-size: 12px;
+        }
+
+        .character-hamster::after {
+            content: '●';
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff69b4;
+            font-size: 8px;
+        }
+
+        /* Sound effects */
+        .sound-effect {
+            font-family: 'Bangers', cursive;
+            font-size: 1.5rem;
+            color: #e74c3c;
+            text-align: center;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: soundPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes soundPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            display: none;
+            background: rgba(0,0,0,0.95);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .admin-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 3px solid #3498db;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+
+        .admin-header h2 {
+            font-family: 'Bangers', cursive;
+            color: #2c3e50;
+            font-size: 2rem;
+        }
+
+        .close-admin {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .close-admin:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .login-form, .content-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #2c3e50;
+            font-family: 'Comic Neue', cursive;
+            font-size: 1.1rem;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 15px;
+            border: 3px solid #bdc3c7;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-family: 'Comic Neue', cursive;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+            transform: scale(1.02);
+        }
+
+        .form-group textarea {
+            min-height: 250px;
+            resize: vertical;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .success-message {
+            background: linear-gradient(145deg, #d4edda, #c3e6cb);
+            color: #155724;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid #28a745;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: linear-gradient(145deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid #dc3545;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .book-container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .book-cover {
+                padding: 25px;
+            }
+
+            .universe-portal {
+                width: 120px;
+                height: 120px;
+            }
+
+            .portal-inner {
+                width: 80px;
+                height: 80px;
+            }
+
+            .book-content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+
+            .navigation {
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .admin-toggle {
+                top: 10px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .content-paragraph {
+                font-size: 1rem;
+                text-indent: 20px;
+                padding: 12px;
+            }
+
+            .admin-content {
+                padding: 20px;
+            }
+
+            .scene-illustration {
+                height: 150px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .book-title {
+                font-size: 1.8rem;
+            }
+
+            .book-author {
+                font-size: 1rem;
+            }
+
+            .chapter-title {
+                font-size: 1.6rem;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .universe-portal {
+                width: 100px;
+                height: 100px;
+            }
+
+            .portal-inner {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated stars background -->
+    <div class="stars" id="stars"></div>
+
+    <div class="book-container">
+        <div class="book-cover">
+            <button class="admin-toggle" onclick="showAdminPanel()">Admin</button>
+            <div class="universe-portal">
+                <div class="portal-inner">🌌</div>
+            </div>
+            <h1 class="book-title">A Common Man Into Another Universe</h1>
+            <p class="book-author">By Sridhar R</p>
+        </div>
+
+        <div class="book-content">
+            <div class="navigation">
+                <button class="nav-btn active" onclick="showChapter('introduction')">📖 Introduction</button>
+                <button class="nav-btn" onclick="showChapter('episode1')">🏢 Episode 1</button>
+                <button class="nav-btn" onclick="showChapter('episode2')">🌟 Episode 2</button>
+                <button class="nav-btn" onclick="showChapter('episode3')">⚔️ Episode 3</button>
+            </div>
+
+            <div id="introduction" class="chapter active">
+                <h2 class="chapter-title">Introduction</h2>
+                <div class="comic-panel">
+                    <div class="scene-illustration">
+                        <div style="font-size: 2rem;">🚶‍♂️ A lone wanderer's story begins... 🌟</div>
+                    </div>
+                </div>
+                <div class="content-paragraph">My name is Sridhar. I am twenty-three years old, and for most of my life, I have walked a lonely path. I am not the type who easily blends into crowds or surrounds himself with company. I have always wandered by myself, carrying my thoughts like a quiet companion.</div>
+                <div class="content-paragraph">From that solitude, this story was born. It is, in many ways, a reflection of who I am and how I see the world. The main character, Parthi Ganesh, is not a hero chosen by destiny. He is simply a common man ...a shadow of myself ...who finds his life suddenly tangled with mysteries far greater than he could imagine.</div>
+                <div class="illustration">
+                    <div class="character-hamster"></div>
+                    <p style="font-style: italic; color: #666; margin-top: 10px;">Meet Baviya - The Wise Guide</p>
+                </div>
+                <div class="content-paragraph">In his journey, he is not entirely alone. He is joined by an unusual companion: a small hamster named Baviya. Though tiny in form, Baviya carries a weight of meaning in this tale, guiding Parthi in unexpected ways. Other characters will appear along the road ...some staying only for a moment, others shaping entire chapters ...but they come and go, just as people do in life.</div>
+                <div class="content-paragraph">This is not only the story of another universe. It is also the story of loneliness, friendship, and discovery. It asks what happens when an ordinary soul is placed into extraordinary circumstances, and whether one's inner emptiness can ever truly be filled.</div>
+                <div class="content-paragraph">So I invite you to walk with me ...and with Parthi ...into a world that begins in silence, but unfolds into something far larger than either of us could ever face alone.</div>
+            </div>
+
+            <div id="episode1" class="chapter">
+                <h2 class="chapter-title">Arc: Universe Plot Break</h2>
+                <h3 class="section-title">1. A Trampoline Day Turns Into a Tragic Day</h3>
+                
+                <div class="comic-panel">
+                    <div class="scene-illustration mall-scene">
+                        <div>🏢 The Grand Shopping Mall 🏢<br>Where everything changes...</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">One day, Parthi went to a grand shopping mall. The moment he entered, chaos broke out. People were screaming and shouting in terror. Suddenly, ten armed men surrounded the mall, declaring, "We are thieves! We are here to take your belongings. No one leaves until we say so. Sit quietly and obey."</div>
+                
+                <div class="sound-effect">💥 CRASH! BANG! 💥</div>
+                
+                <div class="content-paragraph">Parthi couldn't understand what was happening. Fear gripped the crowd, and everyone sat silently, frozen in confusion. Then, out of nowhere, a loud cracking sound echoed through the building. Glass walls shattered, and the entire structure began to collapse. No one could make sense of it ...even the thieves were stunned.</div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: linear-gradient(135deg, #ff4757 0%, #3742fa 100%);">
+                        <div>⚗️ Eidolon Flux - The Mysterious Chemical ⚗️<br>🧪 Creating frequencies beyond human hearing 🧪</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">A few hours earlier, two members of the same gang had secretly entered the mall before the hijack began. While the robbery was in motion, those two had gone underground. They injected a strange chemical into the building's walls, a substance known as "Eidolon Flux." This chemical created a chain reaction: when injected into glass, it caused continuous cracks. These cracks produced a high-pitched frequency ...far above the range of normal human hearing. Prolonged exposure to these sound waves overwhelmed the brain, driving anyone nearby into unconsciousness.</div>
+
+                <div class="sound-effect">🌊 *High-pitched frequency waves* 🌊</div>
+
+                <div class="content-paragraph">That is exactly what happened. Within minutes, every person inside the mall collapsed into silence, including the thieves themselves. Then, in an instant, the entire mall ...along with everyone trapped inside ...disappeared. It was as if it had been erased from reality. News channels across the city broadcasted the shocking headline: "Shopping Mall Vanishes With Hundreds Inside."</div>
+
+                <div class="content-paragraph">Among those lost was Parthi.</div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration universe-scene">
+                        <div>🌟 Welcome to the New Universe! 🌟<br>🐿️ Where animals rule and dreams come alive 🦋</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">When he slowly regained consciousness, he was no longer in the mall. He had awakened in a strange new universe. Here, animals, birds, and even flowers could talk. Vehicles floated in the air. A squirrel was the President of the Universe.</div>
+
+                <div class="content-paragraph">And yet, the people who lived there seemed ordinary, just like humans in his own world. They could attempt anything they wished ...succeed or fail without consequence. In this universe, nothing was judged by winning or losing. The only rule was simple: they had to entertain the animals, birds, and flowers.</div>
+
+                <div class="sound-effect">*kich... kich...*</div>
+
+                <div class="content-paragraph">Parthi, confused and disoriented, struggled to understand where he was or how he could return home. As he sat alone at a table, lost in thought, he heard a faint scratching sound ...kich... kich... Turning around, he saw a hamster.</div>
+
+                <div class="illustration">
+                    <div class="character-hamster"></div>
+                    <div class="dialogue character-baviya">
+                        "Hello there, lost traveler. I'm Baviya, your guide in this realm."
+                    </div>
+                </div>
+
+                <div class="content-paragraph">This was Baviya, the guide who would help Parthi survive and navigate this mysterious universe. Baviya would reveal why this universe existed, what its true purpose was, and what role Parthi had to play within it.</div>
+
+                <div class="content-paragraph" style="text-align: center; font-style: italic; color: #e74c3c; margin-top: 30px; font-size: 1.3rem; font-weight: bold;">And so, Parthi's journey begins... Stay tuned to uncover what lies ahead! 🌟</div>
+            </div>
+
+            <div id="episode2" class="chapter">
+                <h2 class="chapter-title">2. Cracking Open the New Universe</h2>
+                
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: radial-gradient(circle, #ff9ff3, #54a0ff, #5f27cd);">
+                        <div>🌀 The Portal's Secret Revealed 🌀<br>🧬 Ancient DNA and Bloodline Mysteries 🧬</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">Parthi blinked, rubbing the back of his head. The mall ...the screaming, the glass, the void ...felt like a memory seen through fog. He turned and saw a movement on the table: small, quick ...a hamster, upright, eyes bright as if it understood him perfectly.</div>
+
+                <div class="dialogue character-baviya">
+                    "Hello," the hamster said. "I'm Baviya."
+                </div>
+
+                <div class="content-paragraph">Parthi stared. For a long second he couldn't form words.</div>
+
+                <div class="dialogue character-parthi">
+                    "Am I... dreaming? How did I get here? Am I dead? One moment I was inside the mall, and then there was this piercing sound and everything went black. Now I'm here. Where is 'here'? How do I get back?"
+                </div>
+
+                <div class="content-paragraph">Baviya hopped down and sat facing him, calm and deliberate.</div>
+
+                <div class="dialogue character-baviya">
+                    "Listen carefully. You didn't fall into a dream by accident. You were invited ...or rather, you created the invitation."
+                </div>
+
+                <div class="dialogue character-parthi">
+                    "Created it? I didn't do anything. I didn't open anything. I don't even know how to—"
+                </div>
+
+                <div class="dialogue character-baviya">
+                    "You did. At your home, there was a tiny hole. Smaller than a fingernail. To the human eye it would be almost invisible ...only insects or very small creatures could fit. But the portal responds to more than size: it responds to bloodline. If the correct DNA sample or blood-related substance touches that aperture, the portal can open. You didn't just find the hole. You broke it ...made it larger. That's why you were taken."
+                </div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: linear-gradient(135deg, #fd79a8, #fdcb6e, #6c5ce7);">
+                        <div>👨‍🔬 Calisto Navasi's Legacy 👨‍🔬<br>🔬 Nano-Physio-Dyano Technology 🔬</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">Parthi's chest tightened. "I broke it? But why would my DNA trigger something like that? Why me?"</div>
+
+                <div class="content-paragraph">Baviya's whiskers twitched. "Because this universe is keyed to timelines, family lines, and the remnants of certain ancient experiments. Long ago ...long before what you call the present ...a vision took shape. In the time of empires, a man named Calisto Navasi began a project. He was part engineer, part alchemist, and wholly obsessed with control. He wanted to shape life, to manage societies from the ground up. Using early robotics and an emergent field of nano-biology ...what later scholars would call **Nano-Physio-Dyano** ...he seeded an entire pocket-reality: a place where algorithm, organism, and environment responded to rules he wrote."</div>
+
+                <div class="sound-effect">⚡ *Reality Algorithms Activating* ⚡</div>
+
+                <div class="content-paragraph">Baviya hopped closer, lowering his voice as if telling a secret. "Calisto built this universe as an experiment in governance. He taught machines to weave bodies from code, to graft language onto plants and animals, and to make living things talk. Early on, the experiment worked: he siphoned people's life energy, attempted to grant himself—and his chosen heirs—longer lifespans, using living hosts, generations folded into the program. Over time, the project became untethered. People who supported him fell away. Fear and rebellion spread. In desperation, Calisto preserved the core of the project inside what the original architects called a 'portal seed' ...a microscopic aperture protected by insect-scale guardians. Only those whose genetic markers matched the seed, or those who broke the seal, can cross."</div>
+
+                <div class="dialogue character-parthi">
+                    "So Calisto created this place. Then what? Why do animals run it? Why do people here act like ordinary people while animals talk and rule?"
+                </div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: linear-gradient(135deg, #00b894, #00cec9, #74b9ff);">
+                        <div>🐿️ The Great Animal Government 🐿️<br>🦋 Nature's Democratic Revolution 🌸</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">"During the final phase," Baviya said, "the governing algorithm matured into life. To maintain the ecology Calisto needed a new order ...but the people rejected him. He retreated into the work and left the system to self-organize. The algorithm adapted: it assigned stewardship to creatures that were once considered trivial ...insects, rodents, birds. Their minds were enhanced by the code to steward the world. Animals became administrators; plants learned to advise; the atmosphere itself hums with the rules of the program."</div>
+
+                <div class="content-paragraph">He paused and fixed Parthi with a small, earnest stare. "As for the humans you saw: they are settlers of sorts ...ordinary souls who arrived and kept their habits. Here, success and failure lose their social weight. The only currency that matters is attention: you must entertain, please, or befriend the creatures who run things. That's the rule the algorithm enforces. It's strange to you because your instincts are shaped by your old world's values. Here, those values don't hold sway."</div>
+
+                <div class="dialogue character-parthi">
+                    "And the mall? The vanishing? The sound that put everyone out?"
+                </div>
+
+                <div class="content-paragraph">"Ah." Baviya's ears twitched. "That was not part of the portal's natural function. The sound ...the Eidolon Flux the others used ...was a weaponized amplification. It knocked people unconscious, then triggered a transfer protocol. Your breaking the hole at home aligned your signature with the portal seed and created a one-way path. Normally, people taken by the seed return when the aperture is reopened at the exact temporal anchor ...the same date and moment in their original timeline. But because you enlarged the opening, the alignment changed. The return window is no longer guaranteed."</div>
+
+                <div class="dialogue character-parthi">
+                    "So I could be stuck here forever?"
+                </div>
+
+                <div class="content-paragraph">Baviya's small face was soft but firm. "It is possible. Some who enter return after two days; some never do. The portal is capricious now. You were not meant to be here. That makes you different ...and perilous. Worse, the seed is guarded. Only those with the right markers can reopen it without harm. If the seed is opened incorrectly, it can cascade ...draw others in, collapse bridges between worlds, or erase whole places as the mall vanished. That is why the earlier disappearances were so absolute."</div>
+
+                <div class="illustration">
+                    <div class="character-hamster" style="margin: 20px auto;"></div>
+                    <div class="dialogue character-baviya">
+                        "Consider me your translator between worlds, Parthi."
+                    </div>
+                </div>
+
+                <div class="content-paragraph">Parthi let out a long breath and, for the first time since opening his eyes in that impossible place, nodded. The sky above glittered with floating vehicles and singing flowers; a squirrel's silhouette moved across a distant amphitheater, and somewhere below, ordinary people carried on as if it were a normal day.</div>
+
+                <div class="dialogue character-parthi">
+                    "How do we start?"
+                </div>
+
+                <div class="content-paragraph">Baviya's whiskers quivered in what looked very much like a smile. "We begin by learning the rules."</div>
+            </div>
+
+            <div id="episode3" class="chapter">
+                <h2 class="chapter-title">3. Battling Begins in the Keerchika</h2>
+                
+                <div class="comic-panel">
+                    <div class="scene-illustration arena-scene">
+                        <div>⚔️ The Keerchika Arena ⚔️<br>🏟️ Where Entertainment Meets Survival 🏟️</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">Baviya led Parthi across a low, humming plain until they reached the Keerchika ...the universe's official arena. It was a shallow crater ringed with strange flora and floating spectator platforms. As they stepped onto the soft ground, Baviya's voice went quiet and precise.</div>
+
+                <div class="dialogue character-baviya">
+                    "Here are the rules. Every day you must perform something interesting. If you can't entertain, you must fight. Win the fight and you score points. Lose, and you lose points. Bleeding and pain are real here, so fights are dangerous. Each match lasts thirty minutes. Survive, and you still earn a small number of points. Collect enough points and there's a chance to return to your world."
+                </div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: linear-gradient(135deg, #f39c12, #e74c3c, #8e44ad);">
+                        <div>📊 The Point System 📊<br>🏆 Victory: +200 Points 🏆<br>💪 Survival: +10 Points 💪<br>💔 Defeat: -200 Points 💔<br>🎯 Target: 5000 Points 🎯</div>
+                    </div>
+                </div>
+
+                <div class="dialogue character-parthi">
+                    "I just arrived. I don't know how to do any of this. I don't even know what counts as 'interesting.'"
+                </div>
+
+                <div class="content-paragraph">Baviya tapped the rim of his tiny paw against Parthi's knee. "Think of it like a game with rules. You need five thousand points to open a path back. Today's fight will give you a chance to earn a lot ...or lose a lot. Pay attention."</div>
+
+                <div class="sound-effect">🔔 *Arena Bell Rings* 🔔</div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: linear-gradient(135deg, #2d3436, #636e72, #b2bec3);">
+                        <div style="font-size: 3rem;">🦍 KONG729 MARZO 🦍<br><span style="font-size: 1.2rem;">The 8-Foot Terror Approaches!</span></div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">A distant bell rang. Only Baviya and Parthi stood in the arena when an explosion of light announced the arrival of the opponent. The ground trembled as a shadow descended ...**Kong729 Marzo**. He was enormous, an eight-foot-tall, hulking creature that looked like a king-sized ape hybrid: thick-limbed, heavily muscled, and crowned with a mass of scarred fur. Where he walked, the earth flexed. Parthi froze.</div>
+
+                <div class="sound-effect">🦍 *ROOOOOAR!* 🦍</div>
+
+                <div class="content-paragraph">Kong729 roared and lunged. Parthi bolted, adrenaline making his legs betray him. The creature chased, each step a thunderclap. At one point, Parthi slipped and fell into a shallow ditch. Above him, the arena filled with the clamor of virtual spectators ...holographic faces and voices that boomed insults and bets. "Loser!" "You can't even fight!" The taunts sliced at his courage.</div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: linear-gradient(135deg, #ff7675, #fd79a8, #fdcb6e);">
+                        <div>⏱️ 5 MINUTES REMAINING ⏱️<br>🎯 Mission: Capture the Eastern Tower Flag 🎯</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">The match timer blinked five minutes remaining.</div>
+
+                <div class="dialogue character-baviya">
+                    "Kong is strong but predictable. He burns energy fast. We need a distraction ...buy time to get higher ground. If you can plant the flag atop the eastern tower, the system registers a capture and grants bonus points. It will also change the fight's pattern."
+                </div>
+
+                <div class="content-paragraph">Parthi's heart hammered. He forced himself to breathe, watch Kong's movement, and learn the pattern. When the giant charged again, Parthi dodged toward a line of hanging lanterns. He kicked one free; it swung into Kong's face, blinding him for a heartbeat. That was the opening they needed. Parthi ran, climbed a low rise, then vaulted onto a series of floating steps that led toward the arena's eastern tower.</div>
+
+                <div class="sound-effect">💥 *CRASH!* 💥</div>
+
+                <div class="content-paragraph">Kong was faster than Parthi expected. Midway up, the creature slammed the ground, sending a shockwave that knocked Parthi from his footing. He tumbled, rolled, and by luck or stubbornness caught a narrow ledge. Baviya darted ahead, slipping past collapsing rubble and chattering instructions: "Now—left—jump—hold on!"</div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: linear-gradient(135deg, #00b894, #00cec9, #74b9ff);">
+                        <div>🏁 FLAG CAPTURED! 🏁<br>⭐ BONUS POINTS AWARDED! ⭐<br>🎉 Victory Achievement Unlocked! 🎉</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">Parthi pushed past the fear. With Baviya's quick commands and a flurry of desperate moves, he reached the tower's top. He planted the flag, fingers numb, heart cracking with triumph. The arena registered the capture. A bright ripple of points flashed in his mind ...the system acknowledging the feat.</div>
+
+                <div class="sound-effect">⚡ *SYSTEM NOTIFICATION: POINTS GAINED* ⚡</div>
+
+                <div class="content-paragraph">Kong roared like an earthquake and, in a fury, leapt upward. For a terrible second the giant's silhouette filled the sky. He crashed onto the tower's flank and, in the chaos, a spear ...perhaps a weapon from some spectator's wager or a built-in trial mechanism ...spun through the air and struck a figure near the base. The figure collapsed, lifeless. The arena went silent for a heartbeat, then the virtual crowd surged with a fresh, hungry cacophony.</div>
+
+                <div class="content-paragraph">Parthi's victory taste was suddenly bitter. He had achieved the flag capture, earned points, and proved he could act under pressure ...but the spear's fatal hit made something clear: this world did not spare mistakes. Animals and the arena's arbiters would not hesitate to let lives be forfeit in the name of spectacle and rules.</div>
+
+                <div class="dialogue character-baviya">
+                    "You did well. Points matter. But surviving matters more. We must learn faster. The rules here punish hesitation."
+                </div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: linear-gradient(135deg, #2d3436, #636e72, #ddd);">
+                        <div>🤔 A Moment of Deep Reflection 🤔<br>💭 What Price Must Be Paid for Freedom? 💭</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">As they left the arena, Parthi's mind raced with new questions: How many more fights before he reached five thousand? Who else was watching? And what other brutal rules had this strange universe baked into its bones?</div>
+
+                <div class="dialogue character-parthi" style="font-style: italic;">
+                    "Baviya... if I collect all points and leave completely... what should you do? You're created for me... in case I left what should you do? Do you disappear thoroughly... or do you come along with me?"
+                </div>
+
+                <div class="dialogue character-baviya" style="background: linear-gradient(145deg, #ff7675, #fd79a8);">
+                    "That's the question you should be asking. I didn't just get created for you... I'm tied to this universe too. If you leave... maybe I disappear with you. Or maybe I stay trapped here forever. The choice is not only yours, Parthi... it's ours."
+                </div>
+
+                <div class="comic-panel">
+                    <div class="scene-illustration" style="background: linear-gradient(135deg, #74b9ff, #0984e3, #2d3436);">
+                        <div>🌌 The Universe Watches 🌌<br>👁️ Every Choice Has Consequences 👁️</div>
+                    </div>
+                </div>
+
+                <div class="content-paragraph">Parthi stands silent, looking at the battlefield around him. The cheers of the virtual crowd echo in his head. For the first time, he realizes—this universe isn't just about fighting... it's about surviving choices.</div>
+
+                <div class="content-paragraph" style="text-align: center; font-style: italic; color: #e74c3c; margin-top: 40px; font-size: 1.5rem; font-weight: bold; font-family: 'Bangers', cursive;">
+                    🌟 TO BE CONTINUED... 🌟
+                    <br><br>
+                    <span style="font-size: 1rem; font-family: 'Comic Neue', cursive;">What adventures await our heroes next?</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-content">
+            <div class="admin-header">
+                <h2>📚 Admin Panel</h2>
+                <button class="close-admin" onclick="hideAdminPanel()">✖️ Close</button>
+            </div>
+
+            <div id="adminMessage"></div>
+
+            <div id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">👤 Username:</label>
+                    <input type="text" id="username" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="password">🔐 Password:</label>
+                    <input type="password" id="password" placeholder="Enter password">
+                </div>
+                <button class="btn-primary" onclick="adminLogin()">🚀 Login</button>
+            </div>
+
+            <div id="contentForm" class="content-form" style="display: none;">
+                <div class="form-group">
+                    <label for="chapterSelect">📖 Select Chapter:</label>
+                    <select id="chapterSelect">
+                        <option value="introduction">Introduction</option>
+                        <option value="episode1">Episode 1</option>
+                        <option value="episode2">Episode 2</option>
+                        <option value="episode3">Episode 3</option>
+                        <option value="new">➕ Add New Episode</option>
+                    </select>
+                </div>
+                <div class="form-group" id="newTitleGroup" style="display: none;">
+                    <label for="newTitle">✨ New Episode Title:</label>
+                    <input type="text" id="newTitle" placeholder="Enter episode title">
+                </div>
+                <div class="form-group">
+                    <label for="contentText">📝 Content:</label>
+                    <textarea id="contentText" placeholder="Enter your story content here. Use double line breaks to create new paragraphs. For dialogue, use [DIALOGUE-CHARACTER] format. For scene descriptions, use [SCENE] format."></textarea>
+                </div>
+                <button class="btn-primary" onclick="saveContent()">💾 Save Content</button>
+                <button class="btn-primary" onclick="adminLogout()" style="background: linear-gradient(45deg, #e74c3c, #c0392b); margin-left: 10px;">🚪 Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create animated stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // State management
+        let isAdminLoggedIn = false;
+        let storyData = {};
+
+        // Initialize with current content
+        function initializeStoryData() {
+            storyData = {
+                introduction: document.getElementById('introduction').innerHTML,
+                episode1: document.getElementById('episode1').innerHTML,
+                episode2: document.getElementById('episode2').innerHTML,
+                episode3: document.getElementById('episode3').innerHTML
+            };
+        }
+
+        // Chapter navigation
+        function showChapter(chapterId) {
+            // Hide all chapters
+            const chapters = document.querySelectorAll('.chapter');
+            chapters.forEach(chapter => chapter.classList.remove('active'));
+            
+            // Remove active class from all nav buttons
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected chapter
+            document.getElementById(chapterId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Admin panel functions
+        function showAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            clearAdminMessage();
+        }
+
+        function adminLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'sridhar' && password === 'sri@2002') {
+                isAdminLoggedIn = true;
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('contentForm').style.display = 'block';
+                showAdminMessage('🎉 Login successful! Welcome back, Sridhar!', 'success');
+                loadContentForEditing();
+            } else {
+                showAdminMessage('❌ Invalid credentials! Please try again.', 'error');
+            }
+        }
+
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('contentForm').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('contentText').value = '';
+            clearAdminMessage();
+        }
+
+        function showAdminMessage(message, type) {
+            const messageDiv = document.getElementById('adminMessage');
+            messageDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
+        }
+
+        function clearAdminMessage() {
+            document.getElementById('adminMessage').innerHTML = '';
+        }
+
+        // Handle chapter selection change
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            initializeStoryData();
+            
+            const chapterSelect = document.getElementById('chapterSelect');
+            if (chapterSelect) {
+                chapterSelect.addEventListener('change', function() {
+                    const newTitleGroup = document.getElementById('newTitleGroup');
+                    if (this.value === 'new') {
+                        newTitleGroup.style.display = 'block';
+                        document.getElementById('contentText').value = '';
+                    } else {
+                        newTitleGroup.style.display = 'none';
+                        loadContentForEditing();
+                    }
+                });
+            }
+        });
+
+        function loadContentForEditing() {
+            const selectedChapter = document.getElementById('chapterSelect').value;
+            if (selectedChapter !== 'new' && storyData[selectedChapter]) {
+                // Extract text content from HTML for editing
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = storyData[selectedChapter];
+                
+                // Get all paragraphs and titles
+                const elements = tempDiv.querySelectorAll('h2, h3, .content-paragraph, .dialogue');
+                let content = '';
+                
+                elements.forEach(element => {
+                    if (element.tagName === 'H2') {
+                        content += '[TITLE] ' + element.textContent.trim() + '\n\n';
+                    } else if (element.tagName === 'H3') {
+                        content += '[SECTION] ' + element.textContent.trim() + '\n\n';
+                    } else if (element.classList.contains('dialogue')) {
+                        const character = element.classList.contains('character-baviya') ? 'BAVIYA' : 'PARTHI';
+                        content += '[DIALOGUE-' + character + '] ' + element.textContent.trim() + '\n\n';
+                    } else {
+                        content += element.textContent.trim() + '\n\n';
+                    }
+                });
+                
+                document.getElementById('contentText').value = content.trim();
+            }
+        }
+
+        function saveContent() {
+            const selectedChapter = document.getElementById('chapterSelect').value;
+            const content = document.getElementById('contentText').value;
+            const newTitle = document.getElementById('newTitle').value;
+            
+            if (!content.trim()) {
+                showAdminMessage('⚠️ Please enter some content!', 'error');
+                return;
+            }
+            
+            // Process content
+            const processedContent = processContentForDisplay(content, selectedChapter, newTitle);
+            
+            if (selectedChapter === 'new') {
+                if (!newTitle.trim()) {
+                    showAdminMessage('⚠️ Please enter a title for the new episode!', 'error');
+                    return;
+                }
+                
+                // Create new episode
+                const episodeNumber = Object.keys(storyData).filter(key => key.startsWith('episode')).length + 1;
+                const newEpisodeId = 'episode' + episodeNumber;
+                addNewEpisode(newEpisodeId, newTitle, processedContent);
+            } else {
+                // Update existing content
+                storyData[selectedChapter] = processedContent;
+                updateChapterDisplay(selectedChapter, processedContent);
+            }
+            
+            showAdminMessage('✅ Content saved successfully! Your story has been updated.', 'success');
+        }
+
+        function processContentForDisplay(content, chapterId, newTitle) {
+            const lines = content.split('\n');
+            let html = '';
+            
+            if (chapterId === 'new' && newTitle) {
+                html += `<h2 class="chapter-title">${newTitle}</h2>\n`;
+            }
+            
+            lines.forEach(line => {
+                line = line.trim();
+                if (line === '') return;
+                
+                if (line.startsWith('[TITLE]')) {
+                    const title = line.replace('[TITLE]', '').trim();
+                    html += `<h2 class="chapter-title">${title}</h2>\n`;
+                } else if (line.startsWith('[SECTION]')) {
+                    const section = line.replace('[SECTION]', '').trim();
+                    html += `<h3 class="section-title">${section}</h3>\n`;
+                } else if (line.startsWith('[DIALOGUE-BAVIYA]')) {
+                    const dialogue = line.replace('[DIALOGUE-BAVIYA]', '').trim();
+                    html += `<div class="dialogue character-baviya">${dialogue}</div>\n`;
+                } else if (line.startsWith('[DIALOGUE-PARTHI]')) {
+                    const dialogue = line.replace('[DIALOGUE-PARTHI]', '').trim();
+                    html += `<div class="dialogue character-parthi">${dialogue}</div>\n`;
+                } else if (line.startsWith('[SCENE]')) {
+                    const scene = line.replace('[SCENE]', '').trim();
+                    html += `<div class="comic-panel"><div class="scene-illustration">${scene}</div></div>\n`;
+                } else {
+                    html += `<div class="content-paragraph">${line}</div>\n`;
+                }
+            });
+            
+            return html;
+        }
+
+        function updateChapterDisplay(chapterId, content) {
+            const chapterElement = document.getElementById(chapterId);
+            if (chapterElement) {
+                chapterElement.innerHTML = content;
+            }
+        }
+
+        function addNewEpisode(episodeId, title, content) {
+            // Create new chapter element
+            const newChapter = document.createElement('div');
+            newChapter.id = episodeId;
+            newChapter.className = 'chapter';
+            newChapter.innerHTML = content;
+            
+            // Add to the book content
+            document.querySelector('.book-content').appendChild(newChapter);
+            
+            // Add navigation button
+            const navigation = document.querySelector('.navigation');
+            const newNavBtn = document.createElement('button');
+            newNavBtn.className = 'nav-btn';
+            newNavBtn.textContent = `📚 ${title}`;
+            newNavBtn.onclick = function() { showChapter(episodeId); };
+            
+            // Insert before the last navigation button (if any)
+            navigation.insertBefore(newNavBtn, navigation.lastElementChild);
+            
+            // Add to story data
+            storyData[episodeId] = content;
+            
+            // Add to admin dropdown
+            const chapterSelect = document.getElementById('chapterSelect');
+            const newOption = document.createElement('option');
+            newOption.value = episodeId;
+            newOption.textContent = title;
+            chapterSelect.insertBefore(newOption, chapterSelect.lastElementChild);
+            
+            // Reset form
+            document.getElementById('newTitle').value = '';
+            document.getElementById('contentText').value = '';
+            document.getElementById('newTitleGroup').style.display = 'none';
+            chapterSelect.value = episodeId;
+            
+            showAdminMessage(`✅ New episode "${title}" created successfully!`, 'success');
+        }
+    </script>
+</body>
+</html>
